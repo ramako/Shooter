@@ -1,0 +1,23 @@
+{
+	"name": "gametest",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "npx vite",
+		"prod": "npx vite build",
+		"format": "npx @biomejs/biome format --write .",
+		"lint": "npx @biomejs/biome lint --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
+		"typescript": "^5.5.3",
+		"vite": "^5.3.4"
+	},
+	"dependencies": {
+		"pixi.js": "^8.2.5"
+	}
+}
