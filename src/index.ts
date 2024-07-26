@@ -2,7 +2,7 @@ import Game from "./Game";
 import AssetManager from "./libs/AssetManager";
 
 let game: Game = null;
-let assetManager : AssetManager = null;
+let assetManager: AssetManager = null;
 
 async function initialiseGame() {
 	assetManager = new AssetManager({});
@@ -10,7 +10,7 @@ async function initialiseGame() {
 	await assetManager.load();
 	game = new Game();
 	await setup();
-	game.startGame();
+	await game.startGame();
 }
 async function setup() {
 	await game.setup();
