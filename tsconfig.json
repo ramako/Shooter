@@ -16,7 +16,8 @@
 		"noUnusedParameters": true,
 		"allowUnreachableCode": false,
 		"skipDefaultLibCheck": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"resolveJsonModule": true
 	},
 	"exclude": ["node_modules"]
 }
