@@ -81,5 +81,11 @@ class PlayerShip extends Container {
 			this._velocity.x += this._speed;
 		}
 	}
+
+	reset() {
+		this._ship.position.set(400, 500);
+		this._velocity.x = 0;
+		this._velocity.y = 0;
+	}
 }
 export default PlayerShip;

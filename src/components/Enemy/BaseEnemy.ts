@@ -28,6 +28,7 @@ abstract class BaseEnemy extends Container {
 	reset() {
 		this._speed = 0;
 		this._life = 0;
+		this._sprite.position.set(0,-150);
 	}
 }
 export default BaseEnemy;

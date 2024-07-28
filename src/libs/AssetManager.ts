@@ -8,6 +8,10 @@ class AssetManager {
 
 	async load() {
 		Assets.add({ alias: "StartButton", src: "../assets/StartButton.png" });
+		Assets.add({
+			alias: "PlayAgainButton",
+			src: "../assets/PlayAgainButton.png",
+		});
 		Assets.add({ alias: "PlayerShip", src: "../assets/PlayerShip.png" });
 		Assets.add({
 			alias: "GreenEnemyShip",
@@ -22,6 +26,7 @@ class AssetManager {
 			"PlayerShip",
 			"GreenEnemyShip",
 			"PurpleEnemyShip",
+			"PlayAgainButton",
 		]);
 	}
 }

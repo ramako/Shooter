@@ -10,30 +10,30 @@ class MainGame extends Container {
 	private _playerShip: PlayerShip = null;
 	private _elapsedTime: number = 0;
 	private _enemyManager: EnemyManager = null;
-	private _isGameOver: boolean = null;
+	isGameOver: boolean = null;
 
 	constructor() {
 		super();
 		this._player = new Player();
 		this._playerShip = new PlayerShip();
 		this._enemyManager = new EnemyManager();
-		this._isGameOver = false;
+		this.isGameOver = false;
 
 		this.addChild(this._player, this._playerShip, this._enemyManager);
 	}
 
-	start() {}
-
 	update(ticker: Ticker) {
 		// TODO Stop updating when tab changes focus.
-		if (!this._isGameOver) {
+		if (!this.isGameOver) {
 			this._elapsedTime += ticker.elapsedMS;
 			this._playerShip.update();
 			this._enemyManager.update(this._elapsedTime);
-			this._enemyManager.activeEnemyShips.forEach((enemyShip) => {
-				const isHit = this.checkBounds(this._playerShip, enemyShip);
-				this._isGameOver = isHit;
-			});
+			this.isGameOver = this._enemyManager.activeEnemyShips.some(
+				(enemyShip) => {
+					return this.checkBounds(this._playerShip, enemyShip);
+				},
+			);
+		} else {
 		}
 	}
 
@@ -49,6 +49,14 @@ class MainGame extends Container {
 			playerShipBounds.y < enemyShipBounds.y + enemyShipBounds.height &&
 			playerShipBounds.y + playerShipBounds.height > enemyShipBounds.y
 		);
+	}
+
+	reset() {
+		this._player.reset();
+		this._playerShip.reset();
+		this._enemyManager.reset();
+		this._elapsedTime = 0;
+		this.isGameOver = false;
 	}
 }
 export default MainGame;

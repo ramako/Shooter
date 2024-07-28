@@ -1,9 +1,9 @@
 import { Container, Pool, Application } from "pixi.js";
+import ObjectRegistry from "../../libs/ObjectRegistry";
 import GreenEnemyShip from "./GreenEnemyShip";
 import PurpleEnemyShip from "./PurpleEnemyShip";
 
 import enemySpawnConfig from "./EnemyManagerConfig.json";
-import ObjectRegistry from "../../libs/ObjectRegistry";
 
 type shipConfig = {
 	speed: number;
@@ -29,13 +29,13 @@ class EnemyManager extends Container {
 		this._app = ObjectRegistry.fetch("app");
 	}
 
+	// TODO Can be improved, perhaps this._greenEnemySHip and purpleEnemyShip class properties could be
+	// TODO inside an object structure with the keys being the spawnConfig.type
+	// for example enemiesShipsPool = {"GreenEnemyShip": new Pool(GreenEnemyShip,6), "PurpleEnemyShips":new Pool....()}
+	// then can do enemiesShipsPool[spawnConfig.type]
 	spawnEnemy(spawnConfig: shipType) {
 		for (let i = 0; i < spawnConfig.settings.length; ++i) {
 			let enemyShip = null;
-			// TODO Can be improved, perhaps this._greenEnemySHip and purpleEnemyShip class properties could be
-			// TODO inside an object structure with the keys being the spawnConfig.type
-			// for example enemiesShipsPool = {"GreenEnemyShip": new Pool(GreenEnemyShip,6), "PurpleEnemyShips":new Pool....()}
-			// then can do enemiesShipsPool[spawnConfig.type]
 			if (spawnConfig.type === "GreenEnemyShip") {
 				enemyShip = this._greenEnemyShips.get();
 			} else if (spawnConfig.type === "PurpleEnemyShip") {
@@ -81,6 +81,14 @@ class EnemyManager extends Container {
 	 */
 	isOutOfBounds(enemyShip) {
 		return enemyShip.y - enemyShip.width > this._app.screen.height;
+	}
+
+	reset() {
+		this.activeEnemyShips.forEach((enemyShip) => {
+			enemyShip.reset();
+		});
+		this.activeEnemyShips.length = 0;
+		this._processedIntervals.clear();
 	}
 }
 export default EnemyManager;
