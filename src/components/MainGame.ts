@@ -1,37 +1,54 @@
 import Player from "./Player";
-import { Container, Pool } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import PlayerShip from "./PlayerShip";
-import GreenEnemyShip from "./GreenEnemyShip";
+import EnemyManager from "./Enemy/EnemyManager";
+import GreenEnemyShip from "./Enemy/GreenEnemyShip";
+import PurpleEnemyShip from "./Enemy/PurpleEnemyShip";
 
 class MainGame extends Container {
 	private _player: Player = null;
 	private _playerShip: PlayerShip = null;
-	private _greenEnemyShips : Pool<GreenEnemyShip> = null;
+	private _elapsedTime: number = 0;
+	private _enemyManager: EnemyManager = null;
+	private _isGameOver: boolean = null;
 
 	constructor() {
 		super();
 		this._player = new Player();
 		this._playerShip = new PlayerShip();
-		this._greenEnemyShips = new Pool(GreenEnemyShip,6);
-		this._enemyShip = this._greenEnemyShips.get();
-		this.addChild(this._enemyShip);
-		console.log(this._greenEnemyShips.totalFree);
+		this._enemyManager = new EnemyManager();
+		this._isGameOver = false;
 
-		console.log("executing main game", this._greenEnemyShips );
-		this.addChild(this._player, this._playerShip);
+		this.addChild(this._player, this._playerShip, this._enemyManager);
 	}
 
 	start() {}
 
-	update(ticker) {
-		this._playerShip.update();
-		this._enemyShip.y+= 1;
-		//console.log(enemyShip.y)
-
+	update(ticker: Ticker) {
+		// TODO Stop updating when tab changes focus.
+		if (!this._isGameOver) {
+			this._elapsedTime += ticker.elapsedMS;
+			this._playerShip.update();
+			this._enemyManager.update(this._elapsedTime);
+			this._enemyManager.activeEnemyShips.forEach((enemyShip) => {
+				const isHit = this.checkBounds(this._playerShip, enemyShip);
+				this._isGameOver = isHit;
+			});
+		}
 	}
 
-	checkBounds(playerShip, enemyShips){
-
+	checkBounds(
+		playerShip: PlayerShip,
+		enemyShip: GreenEnemyShip | PurpleEnemyShip,
+	) {
+		const playerShipBounds = playerShip.ship.getBounds();
+		const enemyShipBounds = enemyShip.sprite.getBounds();
+		return (
+			playerShipBounds.x < enemyShipBounds.x + enemyShipBounds.width &&
+			playerShipBounds.x + playerShipBounds.width > enemyShipBounds.x &&
+			playerShipBounds.y < enemyShipBounds.y + enemyShipBounds.height &&
+			playerShipBounds.y + playerShipBounds.height > enemyShipBounds.y
+		);
 	}
 }
 export default MainGame;

@@ -9,8 +9,20 @@ class AssetManager {
 	async load() {
 		Assets.add({ alias: "StartButton", src: "../assets/StartButton.png" });
 		Assets.add({ alias: "PlayerShip", src: "../assets/PlayerShip.png" });
-		Assets.add({ alias: "GreenEnemyShip", src: "../assets/GreenEnemyShip.png" });
-		await Assets.load(["StartButton", "PlayerShip", "GreenEnemyShip"]);
+		Assets.add({
+			alias: "GreenEnemyShip",
+			src: "../assets/GreenEnemyShip.png",
+		});
+		Assets.add({
+			alias: "PurpleEnemyShip",
+			src: "../assets/PurpleEnemyShip.png",
+		});
+		await Assets.load([
+			"StartButton",
+			"PlayerShip",
+			"GreenEnemyShip",
+			"PurpleEnemyShip",
+		]);
 	}
 }
 export default AssetManager;

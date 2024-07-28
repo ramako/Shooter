@@ -11,14 +11,13 @@ class Game {
 	private _app: Application<Renderer> = null;
 	private _stages: Record<stagesNames, Container> = null;
 	constructor() {
+		this._app = new Application();
+		ObjectRegistry.register("app", this._app);
 		this._startScreen = new StartScreen();
 		this._mainGame = new MainGame();
 	}
 
 	async setup() {
-		this._app = new Application();
-		ObjectRegistry.register("app", this._app);
-
 		await this._app.init({
 			background: "#1099bb",
 			autoStart: true,
