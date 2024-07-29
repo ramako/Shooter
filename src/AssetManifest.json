@@ -1,0 +1,22 @@
+{
+	"sprites": [
+		{ "alias": "StartButton", "src": "../assets/StartButton.png" },
+		{
+			"alias": "PlayAgainButton",
+			"src": "../assets/PlayAgainButton.png"
+		},
+		{ "alias": "PlayerShip", "src": "../assets/PlayerShip.png" },
+		{
+			"alias": "GreenEnemyShip",
+			"src": "../assets/GreenEnemyShip.png"
+		},
+		{
+			"alias": "PurpleEnemyShip",
+			"src": "../assets/PurpleEnemyShip.png"
+		},
+		{
+			"alias": "Bullet",
+			"src": "../assets/Bullet.png"
+		}
+	]
+}

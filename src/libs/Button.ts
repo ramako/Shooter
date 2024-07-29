@@ -1,11 +1,29 @@
 import { BitmapText, Container, Sprite } from "pixi.js";
 import AssetManager from "./AssetManager";
 
+import type { EventMode, Cursor, TextOptions } from "pixi.js";
+
+type settingsType = {
+	eventMode?: EventMode;
+	cursor?: Cursor;
+	interactive?: boolean;
+	background: {
+		x: number;
+		y: number;
+		texture: string;
+	};
+	label: TextOptions;
+	align?: boolean;
+};
+
+/**
+ * Button class to provide some basic common functionality for any button in the game.
+ */
 //TODO Implement more settings through the constructor so client can modify properties even further
 class Button extends Container {
-	private _background: Sprite = null;
-	private _text: BitmapText = null;
-	constructor(settings) {
+	private readonly _background: Sprite = null;
+	private readonly _text: BitmapText = null;
+	constructor(settings: settingsType) {
 		super();
 
 		this.eventMode = settings.eventMode ?? "auto";
@@ -32,7 +50,11 @@ class Button extends Container {
 		this.on("pointerdown", this._down, this);
 	}
 
-	private _down() {
+	/**
+	 * Listener for the pointerdown event.
+	 *
+	 */
+	private _down(): void {
 		this.emit("buttonClicked");
 	}
 }

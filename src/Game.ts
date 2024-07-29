@@ -1,11 +1,15 @@
+import { type Application, type Renderer, Container } from "pixi.js";
 import ObjectRegistry from "./libs/ObjectRegistry";
-import { Application, type Renderer, Container } from "pixi.js";
-import StartScreen from "./components/StartScreen";
-import MainGame from "./components/MainGame";
-import GameOver from "./components/GameOver";
+import StartScreen from "./components/Scenes/StartScreen";
+import MainGame from "./components/Scenes/MainGame";
+import GameOver from "./components/Scenes/GameOver";
 
 type stagesNames = "startScreen" | "mainGame" | "gameOver";
 
+/**
+ * Game class handles the main ticker update and setups the stages.
+ * It handles transitions between screens
+ */
 class Game {
 	private _startScreen: StartScreen = null;
 	private _mainGame: MainGame = null;
@@ -19,7 +23,32 @@ class Game {
 		this._gameOver = new GameOver();
 	}
 
-	async setup() {
+	/**
+	 * Inits the start screen and awaits for user input.
+	 */
+	async startScreen(): Promise<void> {
+		await this._startScreen.init();
+	}
+
+	/**
+	 * Starts the main game loop and lets mainGame handle the logic of the updates
+	 */
+	async startGame(): Promise<void> {
+		this._stages.startScreen.visible = false;
+		this._stages.mainGame.visible = true;
+		this._app.ticker.add((ticker) => {
+			this._mainGame.update(ticker);
+			if (this._mainGame.isGameOver) {
+				this._app.ticker.stop();
+				this._showGameOverScreen();
+			}
+		});
+	}
+
+	/**
+	 * Sets up the stages and events
+	 */
+	async setup(): Promise<void> {
 		this._stages = {
 			startScreen: new Container(),
 			mainGame: new Container(),
@@ -42,31 +71,22 @@ class Game {
 		this._gameOver.on("playAgain", this._onPlayAgain, this);
 	}
 
-	_onPlayAgain() {
+	/**
+	 * Event listener for the play again button of the Game Over screen.
+	 * Will reset the state of the components and start the ticker.
+	 *
+	 */
+	private _onPlayAgain(): void {
 		this._mainGame.reset();
 		this._stages.gameOver.visible = false;
 		this._app.ticker.start();
-
 	}
 
-	async startScreen() {
-		await this._startScreen.init();
-	}
-
-	async startGame() {
-		this._stages.startScreen.visible = false;
-		this._stages.mainGame.visible = true;
-		this._app.ticker.add((ticker) => {
-			this._mainGame.update(ticker);
-			if (this._mainGame.isGameOver) {
-				this._app.ticker.stop();
-
-				this._showGameOverScreen();
-			}
-		});
-	}
-
-	private _showGameOverScreen() {
+	/**
+	 * Shows the game over screen
+	 *
+	 */
+	private _showGameOverScreen(): void {
 		this._stages.gameOver.visible = true;
 	}
 }

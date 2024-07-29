@@ -39,6 +39,19 @@
 				}
 			]
 		},
+		"11000": {
+			"type": "GreenEnemyShip",
+			"settings": [
+				{
+					"speed": 1,
+					"spawnPosition": { "x": 120, "y": 0 }
+				},
+				{
+					"speed": 1.5,
+					"spawnPosition": { "x": 220, "y": 0 }
+				}
+			]
+		},
 		"13060": {
 			"type": "PurpleEnemyShip",
 			"settings": [
